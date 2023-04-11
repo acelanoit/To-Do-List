@@ -1,0 +1,33 @@
+<%- include("header") -%>
+
+<div class="box" id="heading">
+  <h1> <%= listTitle %> </h1>
+</div>
+
+<div class="box">
+  <% newListItems.forEach(item => { %>
+  <form action="/delete" method="post">
+    <!-- The action (the route) responsible for deleting existing items
+    needs to be different than the one responsible for adding new items. -->
+    <div class="item">
+      <!-- Since we don't have a button of type submit for deleting existing items,
+      we use the onchange event to submit the form.
+      We also need to give this input a name in order to access it inside the req.body.
+      Finally, we need to assign this input a value to identify for which item the checkbox was ticked (otherwise the value will simply be on): -->
+      <input type="checkbox" name="checkbox" value="<%= item._id %>" onchange="this.form.submit()">
+      <p><%=  item.name  %></p>
+    </div>
+
+    <!-- We use a hidden input in addition to the checkbox input to be able to parse the listTitle of the list
+    from which the item should be deleted: -->
+    <input type="hidden" name="listName" value="<%= listTitle %>">
+  </form>
+  <% }); %>
+
+  <form class="item" action="/" method="post">
+    <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+    <button type="submit" name="list" value="<%= listTitle %>">+</button>
+  </form>
+</div>
+
+<%- include("footer") -%>
